@@ -52,10 +52,10 @@ export const ExpenseCard = ({ expense, newExpenseData }) => {
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
         <Typography variant="h5" component="div" mb={2}>
-          Type: {expense.description}
+          Type: {expense.type}
         </Typography>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Description :{expense.type}
+          Description :{expense.description}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           Date : {expense.date}

@@ -20,6 +20,7 @@ export const ExpenseLayout = () => {
   const [expenseList, setExpenseList] = useState([]);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [selectedId, setSelectedId] = useState();
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     loadExpenses();
@@ -48,7 +49,7 @@ export const ExpenseLayout = () => {
     setDescription("");
     setDate("");
     setAmount("");
-    setIsUpdateMode(false)
+    setIsUpdateMode(false);
   };
 
   const newExpenseData = {
@@ -66,13 +67,19 @@ export const ExpenseLayout = () => {
     handleOpen,
     handleClose,
     setSelectedId,
-    setIsUpdateMode
+    setIsUpdateMode,
+    filter
   };
 
   return (
     <>
       <NavBar />
-      <ExpenseSummury expenseList={expenseList} handleOpen={handleOpen} />
+      <ExpenseSummury
+        expenseList={expenseList}
+        handleOpen={handleOpen}
+        filter={filter}
+        setFilter={setFilter}
+      />
       <ExpenseContainer newExpenseData={newExpenseData} />
       <NewExpenseModal
         newExpenseData={newExpenseData}
