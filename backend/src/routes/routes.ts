@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/expenses", getExpenses);
 router.post("/expense", addExpense);
-router.put("/expense", updateExpense);
-router.delete("/expense", deleteExpense);
+router.put("/expense/:id", updateExpense);
+router.delete("/expense/:id", deleteExpense);
 
 export default router

@@ -1,22 +1,22 @@
 import mongoose, { ConnectOptions } from "mongoose";
 import dotenv from "dotenv";
-import { expenseModel } from "../models/expense-modle";
+
 dotenv.config();
 
-const NEW_DATABASE_CREATOR_URL = process.env.NEW_DATABASE_CREATOR_URL || "";
+const NEW_DATABASE_CREATOR_URL = process.env.MONGO_DB_CONNECTION_STRING || "";
 
-let con = {};
+let con: any = {};
 
-const connection = async () => {
+const connection = async (startServer: Function) => {
   try {
-    con = await mongoose.createConnection(NEW_DATABASE_CREATOR_URL, {
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-    } as ConnectOptions);
-
-    //register model with connection
-    con.model( expenseModel);
+    con = await mongoose
+      .connect(NEW_DATABASE_CREATOR_URL, {
+        // useCreateIndex: true,
+        // useUnifiedTopology: true,
+        // useNewUrlParser: true,
+      } as ConnectOptions)
+      .then((res) => startServer())
+      .catch((err) => console.log(err));
 
     return con && con;
   } catch (error) {

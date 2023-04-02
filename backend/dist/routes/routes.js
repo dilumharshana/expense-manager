@@ -11,6 +11,6 @@ const update_expenses_1 = require("../services/update-expenses");
 const router = express_1.default.Router();
 router.get("/expenses", get_expenses_1.getExpenses);
 router.post("/expense", add_expenses_1.addExpense);
-router.put("/expense", update_expenses_1.updateExpense);
-router.delete("/expense", delete_expenses_1.deleteExpense);
+router.put("/expense/:id", update_expenses_1.updateExpense);
+router.delete("/expense/:id", delete_expenses_1.deleteExpense);
 exports.default = router;

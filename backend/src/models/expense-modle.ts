@@ -1,23 +1,25 @@
 import mongoose from "mongoose";
 
 
-export const expenseModel = new mongoose.Schema({
+ const expenseSchema = new mongoose.Schema({
     description: {
         type: String,
       },
       type: {
         type: String,
-        required: true,
-        min: 2,
-        max: 25,
+        required: [true,"Please enter expense type"],
       },
       date: {
         type: String,
-        required: true,
+        required: [true,"Please enter expense date"],
         min: 6,
       },
       amount: {
         type: Number,
-        required: true,
+        required: [true,"Please enter expense amount"],
       },
 })
+
+const ExpenseModel = mongoose.model('expense' ,expenseSchema)
+
+export default ExpenseModel
