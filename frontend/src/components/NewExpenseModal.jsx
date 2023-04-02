@@ -7,6 +7,7 @@ import { TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -20,6 +21,35 @@ const style = {
 };
 
 export const NewExpenseModal = ({ open, handleClose, newExpenseData }) => {
+  const handleSave = async () => {
+    try {
+      const data = {
+        type: newExpenseData?.type,
+        description: newExpenseData?.description,
+        amount: newExpenseData?.amount,
+        date: newExpenseData?.date,
+      };
+
+      const headers = {
+        "Content-Type": "application/json",
+        "X-Auth-Token": "97e0d315477f435489cf04904c9d0e6co",
+      };
+
+      const response = await axios.post(
+        "http://localhost:8070/api/expense",
+        data,
+        {
+          headers,
+        }
+      );
+
+      newExpenseData?.setExpenseList([...newExpenseData?.expenseList,response?.data?.data])
+      handleClose()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -40,27 +70,39 @@ export const NewExpenseModal = ({ open, handleClose, newExpenseData }) => {
             justifyContent="center"
             spacing={2}
           >
-            <TextField placeholder="Expense type" />
-            <TextField placeholder="Expense Description" />
+            <TextField
+              placeholder="Expense type"
+              value={newExpenseData?.type}
+              onChange={(e) => newExpenseData?.setType(e.target.value)}
+            />
+            <TextField
+              placeholder="Expense Description"
+              value={newExpenseData?.description}
+              onChange={(e) => newExpenseData?.setDescription(e.target.value)}
+            />
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Basic example"
                 value={newExpenseData.date}
                 onChange={(newValue) => {
-                    newExpenseData.setDate(newValue);
+                  newExpenseData.setDate(newValue);
                 }}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
 
-            <TextField placeholder="Amount" />
+            <TextField
+              placeholder="Amount"
+              value={newExpenseData?.amount}
+              onChange={(e) => newExpenseData?.setAmount(e.target.value)}
+            />
           </Stack>
           <Stack direction="row" justifyContent="end" spacing={2}>
             <Button variant="outlined" onClick={handleClose}>
               close
             </Button>
-            <Button variant="contained" onClick={undefined}>
+            <Button variant="contained" onClick={handleSave}>
               save
             </Button>
           </Stack>

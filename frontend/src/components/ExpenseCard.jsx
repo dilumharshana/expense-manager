@@ -5,6 +5,9 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import EditIcon from '@mui/icons-material/Edit';
+import { IconButton } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const bull = (
   <Box
@@ -32,8 +35,9 @@ export const ExpenseCard = ({expense}) => {
         {expense.amount}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
+      <CardActions >
+        <IconButton><EditIcon/></IconButton>
+        <IconButton><DeleteIcon/></IconButton>
       </CardActions>
     </Card>
   );
