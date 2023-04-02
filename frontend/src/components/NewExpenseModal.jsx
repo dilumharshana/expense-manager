@@ -20,15 +20,22 @@ const style = {
   p: 4,
 };
 
-export const NewExpenseModal = ({ open, handleClose, newExpenseData }) => {
+export const NewExpenseModal = ({ newExpenseData,selectedId,isUpdateMode }) => {
+
+ 
+  const data = {
+    type: newExpenseData?.type,
+    description: newExpenseData?.description,
+    amount: newExpenseData?.amount,
+    date: newExpenseData?.date,
+  };
+
   const handleSave = async () => {
     try {
-      const data = {
-        type: newExpenseData?.type,
-        description: newExpenseData?.description,
-        amount: newExpenseData?.amount,
-        date: newExpenseData?.date,
-      };
+
+      if(data.amount === null ||data.amount === ""){
+        return alert("Please add Amount of the expense !")
+      }
 
       const headers = {
         "Content-Type": "application/json",
@@ -43,8 +50,43 @@ export const NewExpenseModal = ({ open, handleClose, newExpenseData }) => {
         }
       );
 
-      newExpenseData?.setExpenseList([...newExpenseData?.expenseList,response?.data?.data])
-      handleClose()
+      if(response?.message){
+        return alert("Something went wrong !")
+      }
+
+      newExpenseData?.setExpenseList([
+        ...newExpenseData?.expenseList,
+        response?.data?.data,
+      ]);
+
+      newExpenseData?.handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+        "X-Auth-Token": "97e0d315477f435489cf04904c9d0e6co",
+      };
+
+      const response = await axios.put(
+        `http://localhost:8070/api/expense/${selectedId}`,
+        data,
+        {
+          headers,
+        }
+      );
+
+      const updatedItem = newExpenseData?.expenseList?.map((exp) => {
+        return exp?._id === selectedId ? data : exp;
+      });
+
+      newExpenseData?.setExpenseList(updatedItem);
+
+      newExpenseData?.handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -53,8 +95,8 @@ export const NewExpenseModal = ({ open, handleClose, newExpenseData }) => {
   return (
     <>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={newExpenseData?.open}
+        onClose={newExpenseData?.handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -99,10 +141,13 @@ export const NewExpenseModal = ({ open, handleClose, newExpenseData }) => {
             />
           </Stack>
           <Stack direction="row" justifyContent="end" spacing={2}>
-            <Button variant="outlined" onClick={handleClose}>
+            <Button variant="outlined" onClick={newExpenseData?.handleClose}>
               close
             </Button>
-            <Button variant="contained" onClick={handleSave}>
+            <Button
+              variant="contained"
+              onClick={isUpdateMode === true ? handleUpdate : handleSave}
+            >
               save
             </Button>
           </Stack>

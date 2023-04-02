@@ -8,13 +8,18 @@ import { NewExpenseModal } from "../components/NewExpenseModal";
 export const ExpenseLayout = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    clearData();
+    setOpen(false);
+  };
 
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date().toLocaleDateString());
   const [amount, setAmount] = useState("");
   const [expenseList, setExpenseList] = useState([]);
+  const [isUpdateMode, setIsUpdateMode] = useState(false);
+  const [selectedId, setSelectedId] = useState();
 
   useEffect(() => {
     loadExpenses();
@@ -38,6 +43,14 @@ export const ExpenseLayout = () => {
     }
   };
 
+  const clearData = () => {
+    setType("");
+    setDescription("");
+    setDate("");
+    setAmount("");
+    setIsUpdateMode(false)
+  };
+
   const newExpenseData = {
     type,
     setType,
@@ -49,17 +62,22 @@ export const ExpenseLayout = () => {
     setAmount,
     expenseList,
     setExpenseList,
+    open,
+    handleOpen,
+    handleClose,
+    setSelectedId,
+    setIsUpdateMode
   };
 
   return (
     <>
       <NavBar />
       <ExpenseSummury expenseList={expenseList} handleOpen={handleOpen} />
-      <ExpenseContainer expenseList={expenseList} />
+      <ExpenseContainer newExpenseData={newExpenseData} />
       <NewExpenseModal
-        open={open}
-        handleClose={handleClose}
         newExpenseData={newExpenseData}
+        isUpdateMode={isUpdateMode}
+        selectedId={selectedId}
       />
     </>
   );

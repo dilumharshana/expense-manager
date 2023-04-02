@@ -7,6 +7,7 @@ export const ExpenseSummury = ({expenseList,handleOpen}) => {
     let amount = 0
 
     expenseList?.forEach( expense => {
+      if(!expense.amount|| expense.amount === "") return
         amount += parseInt(expense.amount)
     })
 

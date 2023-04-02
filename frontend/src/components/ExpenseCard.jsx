@@ -3,41 +3,72 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import { IconButton } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
+export const ExpenseCard = ({ expense, newExpenseData }) => {
+  const handleDelete = async (expense) => {
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+        "X-Auth-Token": "97e0d315477f435489cf04904c9d0e6co",
+      };
 
-export const ExpenseCard = ({expense}) => {
+      const response = await axios.delete(
+        `http://localhost:8070/api/expense/${expense?._id}`,
+        {
+          headers,
+        }
+      );
+
+      const fillterdItems = newExpenseData?.expenseList?.filter(
+        (exp) => exp?._id !== expense?._id
+      );
+
+      newExpenseData?.setExpenseList(fillterdItems);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdate = async (expense) => {
+    try {
+      newExpenseData?.setType(expense?.type);
+      newExpenseData?.setDescription(expense?.description);
+      // newExpenseData?.setDate(new Date(expense?.date).toLocaleDateString());
+      newExpenseData?.setAmount(expense?.amount);
+      newExpenseData?.handleOpen();
+      newExpenseData?.setSelectedId(expense?._id);
+      newExpenseData?.setIsUpdateMode(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {expense.type}
+        <Typography variant="h5" component="div" mb={2}>
+          Type: {expense.description}
         </Typography>
-        <Typography variant="h5" component="div">
-         {expense.description}
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Description :{expense.type}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {expense.date}
+          Date : {expense.date}
         </Typography>
-        <Typography variant="body2">
-        {expense.amount}
-        </Typography>
+        <Typography variant="body2">Amount: {expense.amount}</Typography>
       </CardContent>
-      <CardActions >
-        <IconButton><EditIcon/></IconButton>
-        <IconButton><DeleteIcon/></IconButton>
+      <CardActions>
+        <IconButton onClick={() => handleUpdate(expense)}>
+          <EditIcon />
+        </IconButton>
+        <IconButton onClick={() => handleDelete(expense)}>
+          <DeleteIcon />
+        </IconButton>
       </CardActions>
     </Card>
   );

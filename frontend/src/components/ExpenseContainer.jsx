@@ -3,13 +3,13 @@ import React from "react";
 import { ExpenseCard } from "./ExpenseCard";
 import Grid from "@mui/material/Grid";
 
-export const ExpenseContainer = ({ expenseList }) => {
+export const ExpenseContainer = ({ newExpenseData}) => {
   return (
     <Grid container p={3} spacing={2}>
-      {expenseList.map((expense) => {
+      {newExpenseData?.expenseList.map((expense) => {
         return (
           <Grid item>
-            <ExpenseCard expense={expense} />
+            <ExpenseCard expense={expense} newExpenseData={newExpenseData}/>
           </Grid>
         );
       })}
