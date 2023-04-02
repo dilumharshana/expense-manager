@@ -6,8 +6,8 @@ export const addExpense = async (req: any, res: any) => {
 
     const response = await ExpenseModel.create(newExpense);
 
-    res.status(200).json(response);
+    res.status(200).json({data:response});
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({message:error});
   }
 };
