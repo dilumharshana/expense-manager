@@ -14,8 +14,8 @@ export const deleteExpense = async (req: any, res: any) => {
       res.status(404).json({ message: "Failed to delete product" });
     }
 
-    res.status(200).json(response);
+    res.status(200).json({data:response});
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({message:error});
   }
 };

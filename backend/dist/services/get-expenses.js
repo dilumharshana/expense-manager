@@ -8,10 +8,10 @@ const expense_modle_1 = __importDefault(require("../models/expense-modle"));
 const getExpenses = async (req, res) => {
     try {
         const response = await expense_modle_1.default.find({});
-        res.status(200).json(response);
+        res.status(200).json({ data: response });
     }
     catch (error) {
-        res.status(500).json(error);
+        res.status(500).json({ message: error });
     }
 };
 exports.getExpenses = getExpenses;

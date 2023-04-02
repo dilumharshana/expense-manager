@@ -25,7 +25,7 @@ export const updateExpense = async( req:any,res:any) => {
         }
     
 
-        res.status(200).json(updatedExpense);
+        res.status(200).json({data:updatedExpense});
       } catch (error) {
         res.status(500).json({message:error});
       }

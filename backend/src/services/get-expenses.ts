@@ -4,8 +4,8 @@ export const getExpenses = async (req: any, res: any) => {
   try {
     const response = await ExpenseModel.find({});
 
-    res.status(200).json(response);
+    res.status(200).json({data:response});
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({message:error});
   }
 };

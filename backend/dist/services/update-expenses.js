@@ -20,10 +20,10 @@ const updateExpense = async (req, res) => {
         if (!updatedExpense) {
             res.status(404).json({ message: 'Failed to update product' });
         }
-        res.status(200).json(updatedExpense);
+        res.status(200).json({ data: updatedExpense });
     }
     catch (error) {
-        res.status(500).json(error);
+        res.status(500).json({ message: error });
     }
 };
 exports.updateExpense = updateExpense;

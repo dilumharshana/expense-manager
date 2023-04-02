@@ -9,10 +9,10 @@ const addExpense = async (req, res) => {
     try {
         const newExpense = req?.body;
         const response = await expense_modle_1.default.create(newExpense);
-        res.status(200).json(response);
+        res.status(200).json({ data: response });
     }
     catch (error) {
-        res.status(500).json(error);
+        res.status(500).json({ message: error });
     }
 };
 exports.addExpense = addExpense;
