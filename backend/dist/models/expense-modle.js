@@ -10,11 +10,9 @@ const expenseSchema = new mongoose_1.default.Schema({
     },
     type: {
         type: String,
-        required: [true, "Please enter expense type"],
     },
     date: {
         type: String,
-        required: [true, "Please enter expense date"],
         min: 6,
     },
     amount: {
